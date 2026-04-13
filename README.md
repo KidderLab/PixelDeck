@@ -378,11 +378,10 @@ This keeps the main browsing view responsive while still making videos usable.
 
 ## Troubleshooting
 
-### `pnpm` not recognized
+### If `pnpm` is not available on your system, install `pnpm` with npm:
 
 ```powershell
-corepack enable
-corepack prepare pnpm@9.15.0 --activate
+npm install -g pnpm
 pnpm --version
 ```
 
@@ -423,10 +422,6 @@ pnpm worker
 Check active paths at:
 
 - [http://localhost:3000/settings](http://localhost:3000/settings)
-
-## Current limitation to know
-
-The current populated-library UI does not yet have a permanent always-visible `Import Folder` button in the top toolbar. Command-line folder import is the reliable repeated-import path right now.
 
 ## Main docs
 
