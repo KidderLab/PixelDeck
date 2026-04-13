@@ -221,7 +221,7 @@ pnpm import:folder -- --folder "D:\Media\Videos\Experiment_12" --source "experim
 ### Import an entire parent folder recursively
 
 ```powershell
-pnpm import:folder -- --folder "Z:\easystore\MEDIA\Midjourney images" --source "midjourney-root"
+pnpm import:folder -- --folder "D:\Photos" --source "photos-root"
 ```
 
 That will scan all nested subfolders recursively.
