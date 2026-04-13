@@ -212,10 +212,10 @@ If some assets were already imported:
 From `C:\dev\PixelDeck`:
 
 ```powershell
-pnpm import:folder -- --folder "Z:\easystore\MEDIA\Midjourney images\2024_December_2nd" --source "midjourney-2024-december-2nd"
-pnpm import:folder -- --folder "Z:\easystore\MEDIA\Midjourney images\2025_August" --source "midjourney-2025-august"
-pnpm import:folder -- --folder "Z:\easystore\MEDIA\Midjourney images\2025_June" --source "midjourney-2025-june"
-pnpm import:folder -- --folder "Z:\easystore\MEDIA\Midjourney images\2024_December" --source "midjourney-2024-december"
+pnpm import:folder -- --folder "D:\Photos\2026\January" --source "photos-2026-january"
+pnpm import:folder -- --folder "D:\Research\Microscopy\Session_A" --source "microscopy-session-a"
+pnpm import:folder -- --folder "D:\Archive\Project_X\Batch_01" --source "project-x-batch-01"
+pnpm import:folder -- --folder "D:\Media\Videos\Experiment_12" --source "experiment-12"
 ```
 
 ### Import an entire parent folder recursively
