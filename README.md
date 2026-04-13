@@ -185,7 +185,7 @@ pnpm import:folder -- --folder "FULL_PATH_TO_FOLDER" --source "LABEL"
 Example:
 
 ```powershell
-pnpm import:folder -- --folder "Z:\easystore\MEDIA\Midjourney images\2025_June" --source "midjourney-2025-june"
+pnpm import:folder -- --folder "D:\images\2026_April" --source "2026-April"
 ```
 
 What it does:
