@@ -1,0 +1,169 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum MediaType {
+  IMAGE
+  VIDEO
+}
+
+enum JobStatus {
+  PENDING
+  RUNNING
+  COMPLETED
+  FAILED
+  CANCELLED
+}
+
+model Asset {
+  id               String                 @id @default(cuid())
+  originalFilename String
+  displayName      String
+  folderPath       String?
+  mediaType        MediaType
+  mimeType         String
+  extension        String
+  width            Int?
+  height           Int?
+  durationMs       Int?
+  aspectRatio      Float?
+  orientation      String?
+  fileSizeBytes    BigInt
+  sha256           String                 @unique
+  perceptualHash   String?
+  originalPath     String
+  thumbnailPath    String?
+  previewPath      String?
+  posterPath       String?
+  source           String
+  promptText       String?
+  modelName        String?
+  generationDate   DateTime?
+  importedAt       DateTime
+  capturedAt       DateTime?
+  favorite         Boolean                @default(false)
+  archived         Boolean                @default(false)
+  deletedAt        DateTime?
+  metadataJson     Json
+  searchableText   String
+  createdAt        DateTime               @default(now())
+  updatedAt        DateTime               @updatedAt
+  tags             AssetTag[]
+  collections      CollectionAsset[]
+  duplicateEvents  ImportDuplicateEvent[]
+
+  @@index([mediaType, archived, importedAt(sort: Desc)])
+  @@index([favorite, archived, importedAt(sort: Desc)])
+  @@index([source, importedAt(sort: Desc)])
+  @@index([extension, importedAt(sort: Desc)])
+  @@index([folderPath, importedAt(sort: Desc)])
+  @@index([width, height])
+  @@index([durationMs])
+  @@index([fileSizeBytes])
+  @@index([capturedAt])
+}
+
+model Tag {
+  id        String     @id @default(cuid())
+  name      String     @unique
+  color     String?
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  assets    AssetTag[]
+}
+
+model AssetTag {
+  assetId String
+  tagId   String
+  asset   Asset @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  tag     Tag   @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([assetId, tagId])
+  @@index([tagId])
+}
+
+model Collection {
+  id          String            @id @default(cuid())
+  name        String            @unique
+  description String?
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+  assets      CollectionAsset[]
+}
+
+model CollectionAsset {
+  collectionId String
+  assetId      String
+  createdAt    DateTime   @default(now())
+  collection   Collection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
+  asset        Asset      @relation(fields: [assetId], references: [id], onDelete: Cascade)
+
+  @@id([collectionId, assetId])
+  @@index([assetId])
+}
+
+model ImportJob {
+  id               String                 @id @default(cuid())
+  sourceFolder     String
+  source           String
+  status           JobStatus              @default(PENDING)
+  totalDiscovered  Int                    @default(0)
+  processedCount   Int                    @default(0)
+  duplicateCount   Int                    @default(0)
+  failedCount      Int                    @default(0)
+  skippedCount     Int                    @default(0)
+  errorMessage     String?
+  lastProcessedAt  DateTime?
+  createdAt        DateTime               @default(now())
+  updatedAt        DateTime               @updatedAt
+  duplicateEvents  ImportDuplicateEvent[]
+}
+
+model ImportDuplicateEvent {
+  id                 String    @id @default(cuid())
+  importJobId        String
+  attemptedFilename  String
+  attemptedPath      String
+  existingAssetId    String?
+  existingSha256     String
+  existingDisplayName String
+  existingOriginalFilename String
+  createdAt          DateTime  @default(now())
+  importJob          ImportJob @relation(fields: [importJobId], references: [id], onDelete: Cascade)
+  existingAsset      Asset?    @relation(fields: [existingAssetId], references: [id], onDelete: SetNull)
+
+  @@index([importJobId, createdAt(sort: Desc)])
+  @@index([existingAssetId])
+}
+
+model ExportJob {
+  id             String    @id @default(cuid())
+  name           String
+  status         JobStatus @default(PENDING)
+  assetIdsJson   Json
+  zipPath        String?
+  progressCount  Int       @default(0)
+  totalCount     Int       @default(0)
+  errorMessage   String?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+}
+
+model SavedSearch {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  queryJson   Json
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model AppSetting {
+  key       String   @id
+  valueJson Json
+  updatedAt DateTime @updatedAt
+}
