@@ -1,0 +1,15 @@
+version: "3.9"
+
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./storage:/app/storage
+    command: pnpm start
+  worker:
+    build: .
+    volumes:
+      - ./storage:/app/storage
+    command: pnpm worker
