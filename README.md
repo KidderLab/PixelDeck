@@ -452,8 +452,6 @@ Check active paths at:
 - [PostgreSQL migration](docs/postgresql-migration.md)
 - [Keyboard shortcuts](docs/keyboard-shortcuts.md)
 - [Tailscale remote access](docs/tailscale-remote-access.md)
-- [Repository goal and GitHub upload guide](docs/repo-goal-and-github-upload.md)
-
 
 ---
 
