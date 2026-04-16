@@ -192,12 +192,4 @@ If there is no active Serve configuration, re-run:
 tailscale serve 3000
 ```
 
-### I want this public on the internet
 
-That is a different setup. Use a hardened reverse proxy or Cloudflare Access in front of PixelDeck. Do not use public exposure until app-level authentication and access controls are added.
-
-## What this does not do yet
-
-This setup does not add PixelDeck-native authentication. It relies on Tailscale access controls and your identity provider MFA.
-
-For personal remote viewing, this is usually the right first step.
