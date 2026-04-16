@@ -2,6 +2,24 @@
 
 PixelDeck is a local-first browser application for managing very large image and video libraries. It is designed for workflows where you may have thousands to hundreds of thousands of generated or curated assets and need fast browsing, filtering, selection, collections, imports, and ZIP exports on consumer hardware.
 
+---
+
+## Interface overview
+
+![PixelDeck landing page](docs/Figure2_landing_page.png)
+
+PixelDeck provides a responsive, local-first interface for ingesting, browsing, and curating large image and video libraries with minimal latency.
+
+---
+
+## Pipeline overview
+
+![PixelDeck pipeline](docs/Figure1_pipeline.svg)
+
+The pipeline illustrates recursive ingestion, duplicate-aware processing, immutable storage, metadata indexing, and interactive curation workflows.
+
+---
+
 ## What PixelDeck does
 
 - browses large libraries with a virtualized grid and table view
