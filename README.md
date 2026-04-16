@@ -453,3 +453,14 @@ Check active paths at:
 - [Keyboard shortcuts](docs/keyboard-shortcuts.md)
 - [Tailscale remote access](docs/tailscale-remote-access.md)
 - [Repository goal and GitHub upload guide](docs/repo-goal-and-github-upload.md)
+
+
+---
+
+## 🧩 Contact
+
+For academic collaboration or inquiries:
+
+**Benjamin Kidder, PhD**  
+Associate Professor, Department of Oncology  
+Karmanos Cancer Institute / Wayne State University
