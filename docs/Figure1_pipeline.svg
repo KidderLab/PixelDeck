@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1349" height="733" viewBox="0 0 1400 760" preserveAspectRatio="xMidYMid meet">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0b1020"/>
+      <stop offset="100%" stop-color="#101827"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#0ea5e9"/>
+      <stop offset="100%" stop-color="#14b8a6"/>
+    </linearGradient>
+    <style>
+      .title { font: 700 34px 'Segoe UI', Arial, sans-serif; fill: #f8fafc; }
+      .subtitle { font: 500 17px 'Segoe UI', Arial, sans-serif; fill: #cbd5e1; }
+      .box { fill: #111827; stroke: #334155; stroke-width: 2; rx: 24; ry: 24; }
+      .box2 { fill: #0f172a; stroke: #1d4ed8; stroke-width: 2; rx: 24; ry: 24; }
+      .box3 { fill: #0f172a; stroke: #0ea5e9; stroke-width: 2; rx: 24; ry: 24; }
+      .boxtitle { font: 700 24px 'Segoe UI', Arial, sans-serif; fill: #f8fafc; }
+      .boxtext { font: 500 18px 'Segoe UI', Arial, sans-serif; fill: #dbeafe; }
+      .small { font: 500 16px 'Segoe UI', Arial, sans-serif; fill: #cbd5e1; }
+      .pill { fill: url(#accent); rx: 14; ry: 14; }
+      .pilltext { font: 700 14px 'Segoe UI', Arial, sans-serif; fill: #082f49; }
+      .arrowline { stroke: #38bdf8; stroke-width: 5; fill: none; }
+      .arrowfill { fill: #38bdf8; }
+    </style>
+  </defs>
+
+  <rect width="1400" height="760" fill="url(#bg)"/>
+
+  <text x="56" y="64" class="title">PixelDeck pipeline for high-volume image and video curation</text>
+  <text x="56" y="98" class="subtitle">Local-first ingestion, immutable storage, derived previews, SQLite metadata, and interactive curation/export</text>
+
+  <rect x="56" y="148" width="296" height="180" class="box"/>
+  <text x="84" y="192" class="boxtitle">1. Input folders</text>
+  <text x="84" y="230" class="boxtext">Microscopy exports</text>
+  <text x="84" y="260" class="boxtext">Histology snapshots</text>
+  <text x="84" y="290" class="boxtext">High-throughput batches</text>
+  <rect x="84" y="308" width="152" height="28" class="pill"/>
+  <text x="100" y="327" class="pilltext">Recursive import</text>
+
+  <rect x="382" y="148" width="300" height="220" class="box2"/>
+  <text x="410" y="192" class="boxtitle">2. Worker ingestion</text>
+  <text x="410" y="230" class="boxtext">Type filtering</text>
+  <text x="410" y="260" class="boxtext">SHA-256 duplicate detection</text>
+  <text x="410" y="290" class="boxtext">Metadata extraction</text>
+  <text x="410" y="320" class="boxtext">Background job progress</text>
+  <rect x="410" y="338" width="168" height="28" class="pill"/>
+  <text x="424" y="357" class="pilltext">Asynchronous batches</text>
+
+  <rect x="760" y="148" width="282" height="250" class="box3"/>
+  <text x="788" y="192" class="boxtitle">3. Managed storage</text>
+  <text x="788" y="230" class="boxtext">Immutable originals</text>
+  <text x="788" y="260" class="boxtext">JPEG thumbnails</text>
+  <text x="788" y="290" class="boxtext">Preview images/videos</text>
+  <text x="788" y="320" class="boxtext">Poster frames for videos</text>
+  <text x="788" y="350" class="boxtext">ZIP export artifacts</text>
+  <rect x="788" y="368" width="226" height="28" class="pill"/>
+  <text x="802" y="387" class="pilltext">Configurable storage root</text>
+
+  <rect x="1098" y="148" width="246" height="220" class="box"/>
+  <text x="1126" y="192" class="boxtitle">4. Metadata layer</text>
+  <text x="1126" y="230" class="boxtext">SQLite + Prisma</text>
+  <text x="1126" y="260" class="boxtext">Asset, tags, collections</text>
+  <text x="1126" y="290" class="boxtext">Import/export jobs</text>
+  <text x="1126" y="320" class="boxtext">Full-text search index</text>
+  <rect x="1126" y="338" width="130" height="28" class="pill"/>
+  <text x="1154" y="357" class="pilltext">Local-first</text>
+
+  <rect x="140" y="472" width="344" height="184" class="box"/>
+  <text x="168" y="516" class="boxtitle">5. User interface and APIs</text>
+  <text x="168" y="554" class="boxtext">Virtualized gallery and table view</text>
+  <text x="168" y="584" class="boxtext">Search, sort, date filters</text>
+  <text x="168" y="614" class="boxtext">Detail drawer and media serving</text>
+  <text x="168" y="644" class="boxtext">Settings and worker monitoring</text>
+
+  <rect x="584" y="472" width="292" height="184" class="box2"/>
+  <text x="612" y="516" class="boxtitle">6. Curation actions</text>
+  <text x="612" y="554" class="boxtext">Bulk favorite/archive</text>
+  <text x="612" y="584" class="boxtext">Tagging and collections</text>
+  <text x="612" y="614" class="boxtext">Folder-aware context labels</text>
+  <text x="612" y="644" class="boxtext">Import history and duplicate log</text>
+
+  <rect x="970" y="472" width="356" height="184" class="box3"/>
+  <text x="998" y="516" class="boxtitle">7. Reuse across domains</text>
+  <text x="998" y="554" class="boxtext">Microscopy and histology snapshots</text>
+  <text x="998" y="584" class="boxtext">Assay image batches</text>
+  <text x="998" y="614" class="boxtext">Generative AI media collections</text>
+  <text x="998" y="644" class="boxtext">General research image libraries</text>
+
+  <line x1="306" y1="238" x2="338" y2="238" class="arrowline"/>
+  <polygon points="338,220 374,238 338,256" class="arrowfill"/>
+  <line x1="682" y1="258" x2="716" y2="258" class="arrowline"/>
+  <polygon points="716,240 752,258 716,276" class="arrowfill"/>
+  <line x1="1042" y1="258" x2="1076" y2="258" class="arrowline"/>
+  <polygon points="1076,240 1112,258 1076,276" class="arrowfill"/>
+  <path d="M1220 368 V432 H312 V452" class="arrowline"/>
+  <polygon points="294,452 312,488 330,452" class="arrowfill"/>
+  <line x1="484" y1="564" x2="532" y2="564" class="arrowline"/>
+  <polygon points="532,546 568,564 532,582" class="arrowfill"/>
+  <line x1="876" y1="564" x2="918" y2="564" class="arrowline"/>
+  <polygon points="918,546 954,564 918,582" class="arrowfill"/>
+
+  <text x="56" y="720" class="small">Current implementation supports standard image/video formats.</text>
+</svg>
