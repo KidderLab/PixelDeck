@@ -16,12 +16,28 @@ function normalizeFolderContext(rootFolder: string, filePath: string) {
   return relativeDir.split(path.sep).filter(Boolean).join(" / ");
 }
 
+async function readImportJobStatus(jobId: string) {
+  const job = await db.importJob.findUnique({
+    where: { id: jobId },
+    select: { status: true }
+  });
+  return job?.status ?? null;
+}
+
 export async function processImportJob(jobId: string) {
   const job = await db.importJob.findUnique({ where: { id: jobId } });
   if (!job) return;
+  if (job.status === "CANCELLED" || job.status === "COMPLETED" || job.status === "FAILED") return;
 
   await ensureStorageLayout();
-  await db.importJob.update({ where: { id: jobId }, data: { status: "RUNNING" } });
+  const claimResult = await db.importJob.updateMany({
+    where: {
+      id: jobId,
+      status: { in: ["PENDING", "RUNNING"] }
+    },
+    data: { status: "RUNNING" }
+  });
+  if (claimResult.count === 0) return;
 
   try {
     const files = await listFilesRecursive(job.sourceFolder);
@@ -42,6 +58,12 @@ export async function processImportJob(jobId: string) {
     }
 
     for (const filePath of nextFiles) {
+      const currentStatus = await readImportJobStatus(jobId);
+      if (currentStatus === "CANCELLED") {
+        logger.worker("Import job cancelled", { jobId });
+        return;
+      }
+
       const mediaType = getMediaTypeByExtension(filePath);
       if (!mediaType) {
         await db.importJob.update({ where: { id: jobId }, data: { skippedCount: { increment: 1 }, processedCount: { increment: 1 }, lastProcessedAt: new Date() } });
@@ -138,6 +160,7 @@ export async function processImportJob(jobId: string) {
 
     const refreshed = await db.importJob.findUnique({ where: { id: jobId } });
     if (!refreshed) return;
+    if (refreshed.status === "CANCELLED") return;
 
     const finished = refreshed.processedCount >= totalDiscovered;
     await db.importJob.update({
