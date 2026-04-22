@@ -60,6 +60,7 @@ export async function applyBulkAction(input: { assetIds: string[]; action: strin
   if (input.action === "unfavorite") return db.asset.updateMany({ where: { id: { in: input.assetIds } }, data: { favorite: false } });
   if (input.action === "archive") return db.asset.updateMany({ where: { id: { in: input.assetIds } }, data: { archived: true } });
   if (input.action === "unarchive") return db.asset.updateMany({ where: { id: { in: input.assetIds } }, data: { archived: false } });
+  if (input.action === "remove") return db.asset.updateMany({ where: { id: { in: input.assetIds } }, data: { deletedAt: new Date() } });
 
   const tagNames = input.tagNames ?? [];
   const tags = await Promise.all(tagNames.map((name) => db.tag.upsert({ where: { name }, update: {}, create: { name } })));
