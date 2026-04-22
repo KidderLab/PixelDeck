@@ -64,6 +64,7 @@ export function AssetWorkspace() {
   const [density, setDensity] = useState<Density>("medium");
   const [exporting, setExporting] = useState(false);
   const [importing, setImporting] = useState(false);
+  const [removing, setRemoving] = useState(false);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const loadedCursorsRef = useRef<Set<string>>(new Set());
   const inFlightCursorRef = useRef<string | null>(null);
@@ -173,6 +174,32 @@ export function AssetWorkspace() {
     toast.success(`Updated ${selection.ids.length} assets`);
     dispatch({ type: "clear" });
     load(true).catch((error) => toast.error(error.message));
+  }
+
+  async function removeSelection() {
+    if (!selection.ids.length || removing) return;
+    const count = selection.ids.length;
+    const confirmed = window.confirm(`Remove ${count} selected ${count === 1 ? "item" : "items"} from the library?`);
+    if (!confirmed) return;
+
+    setRemoving(true);
+    try {
+      const response = await fetch("/api/bulk", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "remove", assetIds: selection.ids })
+      });
+      const payload = await response.json();
+      if (!payload.ok) throw new Error(typeof payload.error === "string" ? payload.error : "Remove failed");
+      toast.success(`Removed ${count} ${count === 1 ? "item" : "items"} from the library.`);
+      dispatch({ type: "clear" });
+      if (detailId && selection.ids.includes(detailId)) setDetailId(null);
+      await load(true);
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Remove failed");
+    } finally {
+      setRemoving(false);
+    }
   }
 
   async function exportSelection() {
@@ -298,6 +325,7 @@ export function AssetWorkspace() {
                 <Button variant="secondary" onClick={() => dispatch({ type: "replace", ids: items.map((item) => item.id), anchorId: items[0]?.id ?? null })}>Select Visible</Button>
                 <Button variant="secondary" onClick={() => bulk("favorite")}>Favorite</Button>
                 <Button variant="secondary" onClick={() => bulk("archive")}>Archive</Button>
+                <Button variant="secondary" onClick={() => removeSelection()} disabled={!selection.ids.length || removing}>{removing ? "Removing..." : "Remove"}</Button>
                 <Button onClick={() => exportSelection()} disabled={!selection.ids.length || exporting}>{exporting ? "Building ZIP..." : "Export ZIP"}</Button>
                 <Button variant="ghost" onClick={() => dispatch({ type: "clear" })}>Clear</Button>
               </div>
@@ -322,7 +350,15 @@ export function AssetWorkspace() {
           </>
         )}
       </Card>
-      <DetailDrawer assetId={detailId} onClose={() => setDetailId(null)} />
+      <DetailDrawer
+        assetId={detailId}
+        onClose={() => setDetailId(null)}
+        onRemoved={(removedId) => {
+          if (detailId === removedId) setDetailId(null);
+          dispatch({ type: "replace", ids: selection.ids.filter((id) => id !== removedId), anchorId: null });
+          load(true).catch((error) => toast.error(error.message));
+        }}
+      />
     </div>
   );
 }

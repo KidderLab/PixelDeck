@@ -1,6 +1,7 @@
-﻿"use client";
+"use client";
 
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -14,10 +15,12 @@ function formatDuration(durationMs?: number | null) {
   return `${minutes}:${String(seconds).padStart(2, "0")}`;
 }
 
-export function DetailDrawer({ assetId, onClose }: { assetId: string | null; onClose: () => void }) {
+export function DetailDrawer({ assetId, onClose, onRemoved }: { assetId: string | null; onClose: () => void; onRemoved?: (assetId: string) => void }) {
   const [asset, setAsset] = useState<any>(null);
+  const [removing, setRemoving] = useState(false);
 
   useEffect(() => {
+    setAsset(null);
     if (!assetId) return;
     fetch(`/api/assets/${assetId}`).then((response) => response.json()).then((payload) => {
       if (payload.ok) setAsset(payload.data);
@@ -25,6 +28,30 @@ export function DetailDrawer({ assetId, onClose }: { assetId: string | null; onC
   }, [assetId]);
 
   if (!assetId) return null;
+
+  async function removeAsset() {
+    if (!assetId || removing) return;
+    const confirmed = window.confirm("Remove this item from the library?");
+    if (!confirmed) return;
+
+    setRemoving(true);
+    try {
+      const response = await fetch("/api/bulk", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "remove", assetIds: [assetId] })
+      });
+      const payload = await response.json();
+      if (!payload.ok) throw new Error(typeof payload.error === "string" ? payload.error : "Remove failed");
+      toast.success("Item removed from the library.");
+      onRemoved?.(assetId);
+      onClose();
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Remove failed");
+    } finally {
+      setRemoving(false);
+    }
+  }
 
   const isVideo = asset?.mediaType === "VIDEO";
   const cleanName = asset ? getCleanAssetDisplayName(asset.displayName, asset.originalFilename) : "";
@@ -34,7 +61,10 @@ export function DetailDrawer({ assetId, onClose }: { assetId: string | null; onC
       <Card className="flex h-full flex-col p-4">
         <div className="mb-4 flex items-center justify-between">
           <h2 className="text-lg font-semibold">Asset details</h2>
-          <Button variant="ghost" onClick={onClose}>Close</Button>
+          <div className="flex items-center gap-2">
+            <Button variant="secondary" onClick={() => removeAsset()} disabled={removing}>{removing ? "Removing..." : "Remove"}</Button>
+            <Button variant="ghost" onClick={onClose}>Close</Button>
+          </div>
         </div>
         {!asset ? <div className="text-sm text-muted-foreground">Loading...</div> : (
           <div className="space-y-4 overflow-auto">
