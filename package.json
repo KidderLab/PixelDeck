@@ -16,6 +16,7 @@
     "prisma:migrate": "prisma db execute --file prisma/sql/drop-fts.sql --schema prisma/schema.prisma && prisma db push --accept-data-loss && prisma db execute --file prisma/sql/fts.sql --schema prisma/schema.prisma",
     "prisma:deploy": "prisma migrate deploy",
     "import:folder": "tsx scripts/import-folder.ts",
+    "analyze:rgb-lines": "tsx scripts/analyze-rgb-lines.ts",
     "rebuild:thumbs": "tsx scripts/rebuild-thumbnails.ts",
     "reindex:search": "tsx scripts/reindex-search.ts",
     "dev:seed": "tsx scripts/dev-seed.ts"
