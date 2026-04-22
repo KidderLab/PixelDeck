@@ -20,7 +20,7 @@ export const assetListSchema = z.object({
 
 export const bulkActionSchema = z.object({
   assetIds: z.array(z.string()).min(1),
-  action: z.enum(["favorite", "unfavorite", "archive", "unarchive", "tag-add", "tag-remove"]),
+  action: z.enum(["favorite", "unfavorite", "archive", "unarchive", "remove", "tag-add", "tag-remove"]),
   tagNames: z.array(z.string()).optional()
 });
 
